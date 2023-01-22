@@ -77,6 +77,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10000kb' }));
+
 app.use('*', cors());
 
 // Data sanitization against NoSQL query injection
@@ -96,6 +97,7 @@ app.use((req, res, next) => {
 });
 
 // 3) ROUTES
+
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/site', siteRouter);

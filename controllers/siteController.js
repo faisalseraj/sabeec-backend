@@ -90,6 +90,9 @@ exports.loginUserData = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     length: loginUserData.length,
+    pending: loginUserData.filter(({ status }) => status === 'pending'),
+    completed: loginUserData.filter(({ status }) => status === 'completed'),
+    redo: loginUserData.filter(({ status }) => status === 'redo'),
     loginUserData
   });
 });
