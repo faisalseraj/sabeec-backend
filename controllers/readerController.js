@@ -52,6 +52,21 @@ exports.uploadToDrive = async (req, res, next) => {
   }
 };
 
+exports.uploadToDriveFromMobile = async (req, res, next) => {
+  try {
+    const { files } = req.body;
+    const images = [];
+    for (let f = 0; f < files.length; f += 1) {
+      const value = await uploadFile(files[f]);
+      images.push(value);
+    }
+
+    res.json(images);
+  } catch (f) {
+    res.send(f.message);
+  }
+};
+
 exports.getUploadDatabySiteId = async (req, res, next) => {
   const siteId = req.params.id;
   const start = moment()
