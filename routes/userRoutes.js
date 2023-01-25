@@ -16,6 +16,14 @@ router.get('/userStats', authController.protect, userController.getUserStats);
 router.get('/getAllUsers', authController.protect, userController.getAllUsers);
 router.get('/getMe', authController.protect, userController.getMe);
 
+router.post('/findUser', authController.findUser);
+router.post('/sendResetPasswordCode', authController.sendResetPasswordCode);
+router.post('/validateResetCode', authController.validateResetCode);
+router.post('/changePassword', authController.changePassword);
+
+router.patch('/updateUser/:id', userController.updateUser);
+router.delete('/deleteUser/:id', userController.deleteUser);
+
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 

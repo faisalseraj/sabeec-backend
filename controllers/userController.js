@@ -33,6 +33,34 @@ exports.getMe = async (req, res) => {
   }
 };
 
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+
+  if (!user) {
+    return next(new AppError('No user found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    user
+  });
+});
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  const doc = await User.findByIdAndDelete(req.params.id);
+
+  if (!doc) {
+    return next(new AppError('No document found with that ID', 404));
+  }
+
+  res.status(204).json({
+    status: 'success',
+    data: doc
+  });
+});
+
 // exports.getAllUsers = factory.getAll(User);
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   if (req.user.role !== 'admin') {
