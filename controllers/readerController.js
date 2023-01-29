@@ -32,8 +32,34 @@ const uploadFile = async fileObject => {
     },
     fields: 'id,name'
   });
-  console.log(`Uploaded file ${data.name} ${data.id}`);
   return `https://drive.google.com/uc?id=${data.id}`;
+};
+
+const uploadFileMobile = async fileObject => {
+  try {
+    const buf = new Buffer.from(fileObject.uri, 'base64'); // Added
+    const bs = new stream.PassThrough(); // Added
+    bs.end(buf); // Added
+    const { data } = await google.drive({ version: 'v3', auth }).files.create({
+      media: {
+        mimeType: 'application/octet-stream',
+        body: bs
+      },
+      requestBody: {
+        mimeType: 'application/octet-stream',
+
+        name: fileObject.name,
+        parents: ['1u-rByt3_nUt5U8JhyiWbx-DBiBIU2253']
+        // parents: ['12MLP7gnxWG3FdJQhZefip0jdA761O6Ui']
+      },
+      fields: 'id,name'
+    });
+    console.log(`Uploaded file ${data.name} ${data.id}`);
+    return `https://drive.google.com/uc?id=${data.id}`;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
 };
 
 exports.uploadData = upload.any();
@@ -58,8 +84,10 @@ exports.uploadToDriveFromMobile = async (req, res, next) => {
     const { files } = req.body;
     const images = [];
     for (let f = 0; f < files.length; f += 1) {
-      const value = await uploadFile(files[f]);
-      images.push(value);
+      if (files[f] !== null && files[f] !== undefined) {
+        const value = await uploadFileMobile(files[f]);
+        images.push(value);
+      }
     }
 
     res.json(images);
