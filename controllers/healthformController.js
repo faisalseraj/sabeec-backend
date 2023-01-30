@@ -18,14 +18,12 @@ exports.createHealthFormData = catchAsync(async (req, res, next) => {
 exports.getHealthFormbySiteRef = async (req, res, next) => {
   const siteRef = mongoose.Types.ObjectId(req.params.id);
 
-  const start = moment(req.body.Fromdate).format();
-  const end = moment(req.body.Todate).format();
-  // const start = moment()
-  //   .startOf('month')
-  //   .format();
-  // const end = moment()y
-  //   .endOf('month')
-  //   .format();
+  const start = moment()
+    .startOf('month')
+    .format();
+  const end = moment()
+    .endOf('month')
+    .format();
   let singleHealthForm;
   try {
     singleHealthForm = await Healthform.findOne({
