@@ -11,5 +11,5 @@ router
   .route('/:id')
   .post(healthformController.getHealthFormbySiteRef)
   .patch(healthformController.updateHealthForm);
-
+router.route('/:id').get(healthformController.getHealthFormbyId);
 module.exports = router;

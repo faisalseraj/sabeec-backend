@@ -3,12 +3,16 @@ const catchAsync = require('../utils/catchAsync.js');
 const moment = require('moment');
 var mongoose = require('mongoose');
 exports.createHealthFormData = catchAsync(async (req, res, next) => {
-  const data = await Healthform.create(req.body);
+  try {
+    const data = await Healthform.create(req.body);
 
-  res.status(201).json({
-    status: 'success',
-    data
-  });
+    res.status(201).json({
+      status: 'success',
+      data
+    });
+  } catch (e) {
+    console.log(e, 'aaaaaa');
+  }
 });
 
 exports.getHealthFormbySiteRef = async (req, res, next) => {
@@ -41,6 +45,34 @@ exports.getHealthFormbySiteRef = async (req, res, next) => {
     singleHealthForm
   });
 };
+
+exports.getHealthFormbyId = async (req, res, next) => {
+  const siteRef = mongoose.Types.ObjectId(req.params.id);
+
+  // const start = moment()
+  //   .startOf('month')
+  //   .format();
+  // const end = moment()y
+  //   .endOf('month')
+  //   .format();
+  try {
+    singleHealthForm = await Healthform.findOne({
+      siteRef: siteRef
+    });
+  } catch (err) {
+    return console.log(err);
+  }
+  if (!singleHealthForm) {
+    return res
+      .status(404)
+      .json({ message: 'No Health Form Found by this Site' });
+  }
+  res.status(201).json({
+    status: 'success',
+    singleHealthForm
+  });
+};
+
 // exports.getallHealthFormByMonth = async (req, res, next) => {
 //   const start = moment(req.body.Fromdate).format();
 //   const end = moment(req.body.Todate).format();
