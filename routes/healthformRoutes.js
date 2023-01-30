@@ -9,7 +9,7 @@ router
 router.route('/monthwise').post(healthformController.getallHealthFormByMonth);
 router
   .route('/:id')
-  .post(healthformController.getHealthFormbySiteRef)
+  .get(healthformController.getHealthFormbySiteRef)
   .patch(healthformController.updateHealthForm);
 
 module.exports = router;
