@@ -12,7 +12,6 @@ const app = require('./app');
 
 const DB = process.env.DATABASE_LOCAL;
 
-
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
