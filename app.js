@@ -98,7 +98,7 @@ app.use((req, res, next) => {
 
 // 3) ROUTES
 
-
+app.use("/", (req, res) => {res.send("server is up and running")})
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/site', siteRouter);
 app.use('/api/v1/reader', readerRouter);
