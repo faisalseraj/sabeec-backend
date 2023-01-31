@@ -3,12 +3,16 @@ const catchAsync = require('../utils/catchAsync.js');
 const moment = require('moment');
 var mongoose = require('mongoose');
 exports.createHealthFormData = catchAsync(async (req, res, next) => {
-  const data = await Healthform.create(req.body);
+  try {
+    const data = await Healthform.create(req.body);
 
-  res.status(201).json({
-    status: 'success',
-    data
-  });
+    res.status(201).json({
+      status: 'success',
+      data
+    });
+  } catch (e) {
+    console.log(e, 'aaaaaa');
+  }
 });
 
 exports.getHealthFormbySiteRef = async (req, res, next) => {
