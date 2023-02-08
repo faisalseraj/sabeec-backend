@@ -104,7 +104,7 @@ app.use('/api/v1/reader', readerRouter);
 app.use('/api/v1/healthform', healthfromRouter);
 app.post('/upload', upload.single('xlsx'), uploadXLSX);
 app.post('/readerUpload', upload.single('xlsx'), uploadXLSX2);
-// app.use("/", (req, res) => {res.send("server is up and running")})
+app.use("/", (req, res) => {res.send("server is up and running")})
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
