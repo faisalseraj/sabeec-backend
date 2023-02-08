@@ -6,7 +6,11 @@ const readerController = require('../controllers/readerController');
 router
   .route('/uploadToDrive')
   .post(readerController.uploadData, readerController.uploadToDrive);
+  
 router
+  .route('/uploadVideoFromMobile')
+  .post(readerController.uploadData, readerController.uploadToDriveFromMobile);
+  router
   .route('/uploadToDriveFromMobile')
   .post(readerController.uploadData, readerController.uploadToDriveFromMobile);
 router.route('/uploadData').post(readerController.createUploadData);

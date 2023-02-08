@@ -17,6 +17,33 @@ const auth = new google.auth.GoogleAuth({
   scopes: SCOPES
 });
 
+const uploadVideoFromMobile = async fileObject => {
+  try {
+    const buf = new Buffer.from(fileObject.uri, 'base64'); // Added
+    const bs = new stream.PassThrough(); // Added
+    bs.end(buf); // Added
+    const { data } = await google.drive({ version: 'v3', auth }).files.create({
+      media: {
+        mimeType: 'media/mp4',
+        body: bs
+      },
+      requestBody: {
+        mimeType: 'media/mp4',
+
+        name: fileObject.name,
+        parents: ['1u-rByt3_nUt5U8JhyiWbx-DBiBIU2253']
+        // parents: ['12MLP7gnxWG3FdJQhZefip0jdA761O6Ui']
+      },
+      fields: 'id,name'
+    });
+    console.log(`Uploaded file ${data.name} ${data.id}`);
+    return `https://drive.google.com/uc?id=${data.id}`;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
 const uploadFile = async fileObject => {
   const bufferStream = new stream.PassThrough();
   bufferStream.end(fileObject.buffer);
@@ -96,6 +123,23 @@ exports.uploadToDriveFromMobile = async (req, res, next) => {
   }
 };
 
+exports.uploadVideoToDriveFromMobile = async (req, res, next) => {
+  try {
+    const { files } = req.body;
+    const images = [];
+    for (let f = 0; f < files.length; f += 1) {
+      if (files[f] !== null && files[f] !== undefined) {
+        const value = await uploadVideoFromMobile(files[f]);
+        images.push(value);
+      }
+    }
+
+    res.json(images);
+  } catch (f) {
+    res.send(f.message);
+  }
+};
+
 exports.getUploadDatabySiteId = async (req, res, next) => {
   const siteId = req.params.id;
   const start = moment()
@@ -110,8 +154,8 @@ exports.getUploadDatabySiteId = async (req, res, next) => {
       createdAt: { $gte: start, $lte: end },
       siteId
     });
-    // console.log(singleUpload, 'reader data');
-  } catch (err) {
+
+    } catch (err) {
     return console.log(err);
   }
   if (!singleUpload) {
