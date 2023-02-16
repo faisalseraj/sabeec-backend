@@ -76,7 +76,7 @@ if (process.env.NODE_ENV === 'development') {
 // app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
-app.use(express.json({ limit: '10000kb' }));
+app.use(express.json({ limit: '50mb' }));
 
 app.use('*', cors());
 
