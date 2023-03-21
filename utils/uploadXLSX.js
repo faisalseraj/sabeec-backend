@@ -14,13 +14,24 @@ const uploadXLSX = async (req, res, next) => {
         message: 'xml sheet has no data'
       });
     }
-    // await Site.deleteMany();
-    let savedData = await Site.create(jsonData);
 
-    return res.status(201).json({
-      success: true,
-      message: savedData.length + ' rows added to the database'
+    const jsonData1 = jsonData.map(async (item, i) => {
+      const data = await Site.findOne({ SiteID: item.SiteID });
+      if (!data) {
+        await Site.create(item);
+        return item;
+      }
     });
+
+    // await Site.deleteMany();
+    // let savedData = await Site.create(jsonData);
+    setTimeout(() => {
+      return res.status(201).json({
+        success: true,
+        message: 'rows added to the database'
+        // message: savedData.length + ' rows added to the database'
+      });
+    }, 5000);
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }

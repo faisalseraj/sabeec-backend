@@ -169,9 +169,9 @@ exports.createUploadData = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllUploadData = catchAsync(async (req, res, next) => {
-  console.log(req.body.Fromdate);
   let upload;
   if (req.user.role === 'admin') {
+    console.log('enter in');
     const start = moment(req.body.Fromdate).format();
     const end = moment(req.body.Todate).format();
     upload = await Reader.find({ createdAt: { $gte: start, $lte: end } });
